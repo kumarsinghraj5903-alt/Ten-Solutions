@@ -1,0 +1,12 @@
+{
+  "name": "ten-solutions-ai-tutor",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CBSE Class 9–12 AI Tutor – Physics, Chemistry, Maths",
+  "scripts": {
+    "start": "serve . -p 3000 --single"
+  },
+  "devDependencies": {
+    "serve": "^14.2.3"
+  }
+}
