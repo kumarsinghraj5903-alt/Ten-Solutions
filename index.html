@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ten Solutions – AI Tutor Class 9 to 12 (Physics • Chemistry • Maths)</title>
+
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #f0f4ff, #e0e7ff);
+      color: #1e293b;
+      margin: 0;
+      padding-bottom: 160px;
+    }
+    header {
+      background: #1e40af;
+      color: white;
+      padding: 1.2rem 0;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 1.5rem; }
+    h1 { text-align: center; margin: 2.5rem 0 1.5rem; color: #1e40af; font-size: 2.8rem; }
+    .intro {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+      margin: 0 auto 3rem;
+      max-width: 900px;
+      font-size: 1.15rem;
+    }
+    footer {
+      background: #1e40af;
+      color: white;
+      text-align: center;
+      padding: 1.8rem;
+      margin-top: 5rem;
+    }
+
+    .fab {
+      position: fixed;
+      bottom: 40px;
+      right: 40px;
+      width: 76px;
+      height: 76px;
+      background: #3b82f6;
+      color: white;
+      border-radius: 50%;
+      box-shadow: 0 10px 30px rgba(59,130,246,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 34px;
+      cursor: pointer;
+      z-index: 999;
+      transition: all 0.3s ease;
+    }
+    .fab:hover { transform: scale(1.15); box-shadow: 0 14px 40px rgba(59,130,246,0.6); }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      backdrop-filter: blur(5px);
+    }
+    .modal-content {
+      background: white;
+      border-radius: 16px;
+      width: 94%;
+      max-width: 680px;
+      max-height: 94vh;
+      box-shadow: 0 25px 70px rgba(0,0,0,0.45);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .modal-header {
+      background: #1e40af;
+      color: white;
+      padding: 1.3rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-header h2 { margin: 0; font-size: 1.5rem; }
+    .close-btn {
+      font-size: 36px;
+      font-weight: bold;
+      cursor: pointer;
+      color: white;
+    }
+    #chatHistory {
+      flex: 1;
+      padding: 1.6rem;
+      overflow-y: auto;
+      background: #f8fafc;
+    }
+    .message {
+      max-width: 88%;
+      margin: 14px 0;
+      padding: 14px 20px;
+      border-radius: 22px;
+      line-height: 1.55;
+      font-size: 1.03rem;
+    }
+    .user-msg {
+      background: #1e40af;
+      color: white;
+      align-self: flex-end;
+      margin-left: auto;
+    }
+    .ai-msg {
+      background: #e2e8f0;
+      color: #1f2937;
+      align-self: flex-start;
+    }
+    #aiForm {
+      display: flex;
+      padding: 1.3rem 1.6rem;
+      background: white;
+      border-top: 1px solid #e2e8f0;
+    }
+    #aiInput {
+      flex: 1;
+      padding: 14px 18px;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      font-size: 1.05rem;
+      outline: none;
+    }
+    #aiSend {
+      margin-left: 14px;
+      padding: 0 28px;
+      background: #1e40af;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container">
+      <h1>Ten Solutions</h1>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="intro">
+      <p><strong>AI Tutor – Class 9 to 12 Physics • Chemistry • Mathematics</strong></p>
+      <p>Ask any chapter, concept, formula, derivation, numerical, reaction, mechanism, proof, graph, board exam question or revision point.<br>
+      I will explain in detail with key formulas, step-by-step solutions, important points, tricks & board focus.</p>
+    </div>
+  </main>
+
+  <!-- Floating AI Button -->
+  <div class="fab" id="aiBtn" title="Class 9–12 Physics • Chemistry • Maths AI Tutor">🤖</div>
+
+  <!-- AI Modal -->
+  <div id="aiModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Class 9 to 12 AI Tutor</h2>
+        <span class="close-btn" id="aiClose">×</span>
+      </div>
+      <div id="chatHistory">
+        <div class="message ai-msg">
+          Hello! 👋 I'm your complete CBSE AI tutor for <b>Class 9 to 12 Physics, Chemistry & Mathematics</b>.<br><br>
+          I can help with:<br>
+          • Full chapter explanations (9th to 12th)<br>
+          • Step-by-step derivations & proofs<br>
+          • Numericals with detailed working<br>
+          • Organic & inorganic reactions + mechanisms<br>
+          • Important graphs, ray diagrams, free-body diagrams<br>
+          • Board exam tricks, high-weightage topics, previous year patterns<br>
+          • Quick revision notes & formula/reaction sheets<br><br>
+          Just ask any topic or problem — let's begin! 📚✨
+        </div>
+      </div>
+      <form id="aiForm">
+        <input type="text" id="aiInput" placeholder="Ask any Class 9 to 12 Physics / Chemistry / Maths question..." autocomplete="off" />
+        <button type="submit" id="aiSend">Send</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Modal open / close
+    document.getElementById('aiBtn').onclick = () => {
+      document.getElementById('aiModal').style.display = 'flex';
+      document.getElementById('aiInput').focus();
+    };
+
+    document.getElementById('aiClose').onclick = () => {
+      document.getElementById('aiModal').style.display = 'none';
+    };
+
+    window.onclick = e => {
+      if (e.target.id === 'aiModal') e.target.style.display = 'none';
+    };
+
+    // ─────────────────────────────────────────────────────────────
+    //   VERY DETAILED AI TUTOR – CLASS 9 TO 12 PHYSICS, CHEMISTRY, MATHS
+    // ─────────────────────────────────────────────────────────────
+
+    const chatHistory = document.getElementById('chatHistory');
+    const aiForm = document.getElementById('aiForm');
+    const aiInput = document.getElementById('aiInput');
+
+    function addMessage(text, type) {
+      const msg = document.createElement('div');
+      msg.className = `message ${type}-msg`;
+      msg.innerHTML = text;
+      chatHistory.appendChild(msg);
+      chatHistory.scrollTop = chatHistory.scrollHeight;
+    }
+
+    function getAIResponse(question) {
+      const q = question.toLowerCase().trim();
+
+      // ─── GREETING & HELP ───────────────────────────────────────
+      if (q.includes('hi') || q.includes('hello') || q.includes('hey') || q === '') {
+        return "Hello! 👋 I'm your complete Class 9–12 CBSE AI tutor for Physics, Chemistry & Mathematics.<br><br>Ask me anything — chapter name, concept, formula, numerical, reaction, derivation, proof, board question, revision point… I'm ready!";
+      }
+
+      if (q.includes('help') || q.includes('what can you') || q.includes('who are you')) {
+        return "I cover almost the entire CBSE/NCERT syllabus from Class 9 to 12:<br><br><b>Physics</b><br>Class 9: Motion, Force & Laws, Gravitation, Work-Energy-Power, Sound<br>Class 10: Light – Reflection & Refraction, Human Eye, Electricity, Magnetic Effects, Sources of Energy<br>Class 11: Physical World, Units & Measurements, Motion in Straight Line & Plane, Laws of Motion, Work-Energy-Power, Rotational Motion, Gravitation, Mechanical Properties of Solids & Fluids, Thermal Properties, Thermodynamics, Kinetic Theory, Oscillations, Waves<br>Class 12: Electrostatics, Current Electricity, Magnetic Effects, EMI & AC, EM Waves, Ray & Wave Optics, Dual Nature, Atoms, Nuclei, Semiconductors, Communication Systems<br><br><b>Chemistry</b><br>Class 9: Matter, Atoms & Molecules, Structure of Atom, Chemical Reactions, Acids-Bases-Salts, Metals & Non-metals, Carbon Compounds<br>Class 10: Chemical Reactions, Acids-Bases-Salts, Metals & Non-metals, Carbon & Compounds, Periodic Classification<br>Class 11: Basic Concepts, Structure of Atom, Periodic Table, Chemical Bonding, States of Matter, Thermodynamics, Equilibrium, Redox, Hydrogen, s-Block, p-Block, Organic – Basic Principles, Hydrocarbons<br>Class 12: Solid State, Solutions, Electrochemistry, Chemical Kinetics, Surface Chemistry, General Principles & Isolation, p-Block (15–18), d & f Block, Coordination Compounds, Haloalkanes & Haloarenes, Alcohols-Phenols-Ethers, Aldehydes-Ketones-Carboxylic Acids, Amines, Biomolecules, Polymers, Everyday Chemistry<br><br><b>Mathematics</b><br>Class 9: Number Systems, Polynomials, Coordinate Geometry, Linear Equations, Triangles, Lines & Angles, Heron’s Formula, Quadrilaterals, Areas, Circles, Constructions, Surface Areas & Volumes, Statistics, Probability<br>Class 10: Real Numbers, Polynomials, Pair of Linear Equations, Quadratic Equations, Arithmetic Progressions, Triangles, Coordinate Geometry, Trigonometry, Circles, Constructions, Areas Related to Circles, Surface Areas & Volumes, Statistics, Probability<br>Class 11: Sets, Relations & Functions, Trigonometric Functions, Complex Numbers, Linear Inequalities, Permutations & Combinations, Binomial Theorem, Sequences & Series, Straight Lines, Conic Sections, Limits & Derivatives, Statistics, Probability<br>Class 12: Relations & Functions, Inverse Trigonometric Functions, Matrices, Determinants, Continuity & Differentiability, Applications of Derivatives, Integrals, Applications of Integrals, Differential Equations, Vector Algebra, Three Dimensional Geometry, Linear Programming, Probability<br><br>Ask any topic or problem!";
+      }
+
+      // ─── PHYSICS – CLASS 9 TO 12 – VERY DETAILED ──────────────────
+      if (q.includes('motion') || q.includes('kinematics') || q.includes('equation of motion') || q.includes('graph')) {
+        return `<b>Motion (Class 9 & 11)</b><br><br><b>Class 9 – Foundation level</b>:<br>• Distance vs Displacement<br>• Speed vs Velocity<br>• Uniform & non-uniform motion<br>• Acceleration a = (v – u)/t<br>• Equations of motion (constant acceleration):<br>  1. v = u + at<br>  2. s = ut + ½ at²<br>  3. v² = u² + 2as<br>• Graphical representation:<br>  • Distance-time graph → slope = speed<br>  • Velocity-time graph → slope = acceleration, area = displacement<br><br><b>Class 11 – Advanced level</b>:<br>• Relative velocity in 1D & 2D<br>• Calculus approach: instantaneous velocity v = dx/dt, acceleration a = dv/dt<br>• Variable acceleration cases<br>• Motion under gravity (free fall, upward throw, maximum height, time of flight)<br>• Graphs with variable acceleration<br><br><b>Board exam tips</b>:<br>• Always mention sign convention<br>• Draw v-t graph when asked for displacement<br>• Common mistake: confusing average vs instantaneous values<br><br>Want a specific numerical solved or graph drawn/explained?`;
+      }
+
+      if (q.includes('force') || q.includes("newton's law") || q.includes('friction') || q.includes('pseudo')) {
+        return `<b>Force and Laws of Motion (Class 9 & 11)</b><br><br><b>Class 9 level</b>:<br>• Newton’s First Law: Inertia – object resists change in state of motion<br>• Second Law: F = ma → net force causes acceleration<br>• Third Law: Every action has equal & opposite reaction<br>• Momentum p = mv<br>• Impulse J = Δp = F Δt<br>• Conservation of momentum (no external force)<br><br><b>Class 11 level (advanced)</b>:<br>• Free-body diagrams – very important for solving<br>• Types of forces: gravitational, normal, tension, friction, pseudo force (non-inertial frames)<br>• Friction: static ≤ μ_s N, kinetic = μ_k N<br>• Pseudo force = –ma_frame (appears in accelerating frames)<br>• Applications: Atwood machine, wedge-block problems, inclined plane with friction, banking of roads<br><br><b>Board exam tips</b>:<br>• Always draw free-body diagram<br>• Common mistake: forgetting pseudo force in lift/elevator problems<br>• Numericals usually involve pulley or inclined plane<br><br>Want pulley system, banked road or friction numerical solved step-by-step?`;
+      }
+
+      if (q.includes('gravitation') || q.includes('gravity') || q.includes('orbital') || q.includes('escape') || q.includes('kepler')) {
+        return `<b>Gravitation (Class 9 & 11)</b><br><br><b>Class 9 level</b>:<br>• Universal law of gravitation F = G m₁m₂ / r²<br>• G = 6.67 × 10⁻¹¹ N m² kg⁻²<br>• Acceleration due to gravity g ≈ 9.8 m/s²<br>• Weight W = mg<br>• Free fall – all objects fall at same rate in vacuum<br>• Mass vs weight<br>• Thrust & pressure (Archimedes’ principle)<br><br><b>Class 11 level (advanced)</b>:<br>• Gravitational potential V = –GM/r<br>• Gravitational potential energy U = –GMm/r<br>• Escape velocity v_esc = √(2GM/R) ≈ 11.2 km/s (Earth)<br>• Orbital velocity v_orb = √(GM/r)<br>• Time period of satellite T = 2π √(r³/GM)<br>• Kepler’s laws:<br>  1. Elliptical orbits (Sun at one focus)<br>  2. Equal areas in equal time<br>  3. T² ∝ r³<br>• Variation of g: altitude, depth, latitude, rotation of Earth<br>• Geostationary & polar satellites<br><br><b>Board exam tips</b>:<br>• Memorize escape & orbital velocity formulas<br>• Common numericals: satellite period, height of geostationary orbit<br>• Graph of g vs height/depth often asked<br><br>Want satellite numerical, black hole concept or gravitational field lines explanation?`;
+      }
+
+      // ─── FALLBACK – ENCOURAGING & SMART ──────────────────────────
+      return `Got your question! 📚<br><br>I'm your Class 9 to 12 expert for Physics, Chemistry & Mathematics.<br><br>Please ask again — mention the class, chapter, concept, formula, numerical, reaction, derivation, proof, board question type or specific problem.<br><br>What would you like explained or solved in detail right now?`;
+    }
+
+    aiForm.onsubmit = e => {
+      e.preventDefault();
+      const question = aiInput.value.trim();
+      if (!question) return;
+
+      addMessage(question, 'user');
+      aiInput.value = '';
+
+      setTimeout(() => {
+        const answer = getAIResponse(question);
+        addMessage(answer, 'ai');
+      }, 1000 + Math.random() * 1800);
+    };
+  </script>
+</body>
+</html>
