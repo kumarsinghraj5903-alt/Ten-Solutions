@@ -1,12 +1,9 @@
 {
-  "name": "ten-solutions-ai-tutor",
+  "name": "ten-solutions-ai",
   "version": "1.0.0",
   "private": true,
-  "description": "CBSE Class 9–12 AI Tutor – Physics, Chemistry, Maths",
+  "type": "module",
   "scripts": {
-    "start": "serve . -p 3000 --single"
-  },
-  "devDependencies": {
-    "serve": "^14.2.3"
+    "dev": "vercel dev"
   }
 }
