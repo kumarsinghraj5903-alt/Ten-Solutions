@@ -1,32 +1,28 @@
-aiForm.onsubmit = async e => {
-  e.preventDefault();
-  const question = aiInput.value.trim();
-  if (!question) return;
+export default async function handler(req, res) {
+  const userMsg = req.body.message;
 
-  addMessage(question, 'user');
-  aiInput.value = '';
-
-  // Show loading
-  const loadingMsg = addMessage('Typing...', 'ai');
-
-  try {
-    const res = await fetch('/api/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+  const response = await fetch(
+    "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=" + process.env.GEMINI_API_KEY,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        message: question,
-        history: [] // ← you can collect previous messages later
+        contents: [{
+          parts: [{
+            text: `
+You are Ten Solutions AI Tutor.
+Only help CBSE Class 9–12 students.
+Explain simply. No adult content.
+Question: ${userMsg}
+`
+          }]
+        }]
       })
-    });
+    }
+  );
 
-    if (!res.ok) throw new Error('API error');
-
-    const data = await res.json();
-    chatHistory.removeChild(loadingMsg);
-    addMessage(data.content, 'ai');
-
-  } catch (err) {
-    chatHistory.removeChild(loadingMsg);
-    addMessage('Sorry, something went wrong 😔 Please try again.', 'ai');
-  }
-};
+  const data = await response.json();
+  res.status(200).json({
+    reply: data.candidates?.[0]?.content?.parts?.[0]?.text || "Try again."
+  });
+}
