@@ -505,8 +505,63 @@
         <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
     </svg>
 </a>
-<!-- AI button – bottom-right -->
-<button class="fab ai-btn" id="aiBtn" title="AI Assistant of Ten Solutions">🤖</button>
+<!-- AI Chatbot Button -->
+<div id="chatbotBtn" class="fab" style="right:30px; bottom:30px; background:#3498db;">
+  🤖
+</div>
+<div id="chatbot" style="display:none; position:fixed; right:20px; bottom:110px; width:340px; background:white; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,.3); z-index:3000;">
+  
+  <div style="background:#3498db; color:white; padding:12px; border-radius:12px 12px 0 0; font-weight:bold;">
+    Ten Solutions AI 🤖
+    <span id="closeChat" style="float:right; cursor:pointer;">✖</span>
+  </div>
+
+  <div id="chatMessages" style="height:260px; padding:10px; overflow-y:auto; font-size:14px;"></div>
+
+  <div style="display:flex; border-top:1px solid #ddd;">
+    <input id="userMsg" placeholder="Ask CBSE doubt..." style="flex:1; padding:10px; border:none;">
+    <button onclick="sendMsg()" style="padding:10px; background:#3498db; color:white; border:none;">Send</button>
+  </div>
+</div>
+    <script>
+const chatbotBtn = document.getElementById("chatbotBtn");
+const chatbot = document.getElementById("chatbot");
+const closeChat = document.getElementById("closeChat");
+const chatMessages = document.getElementById("chatMessages");
+
+chatbotBtn.onclick = () => chatbot.style.display = "block";
+closeChat.onclick = () => chatbot.style.display = "none";
+
+function addMsg(text, sender) {
+  const div = document.createElement("div");
+  div.style.margin = "6px 0";
+  div.innerHTML = `<b>${sender}:</b> ${text}`;
+  chatMessages.appendChild(div);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+async function sendMsg() {
+  const input = document.getElementById("userMsg");
+  const msg = input.value.trim();
+  if (!msg) return;
+
+  addMsg(msg, "You");
+  input.value = "";
+
+  addMsg("Thinking...", "AI");
+
+  const res = await fetch("/api/chat", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ message: msg })
+  });
+
+  const data = await res.json();
+  chatMessages.lastChild.innerHTML = `<b>AI:</b> ${data.reply}`;
+}
+</script>
+
+
 <!-- AI Modal -->
 <div id="aiModal" class="modal">
     <div class="modal-content">
